@@ -1,0 +1,177 @@
+.App {
+  background: #eef1f7;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #001931;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.CalculatorPage .input-group {
+  height: 45px;  
+}
+
+.CalculatorPage .input-group span.input-group-text {
+  /* width: 45px; */
+  padding-left: 1rem;
+  padding-right: 1rem;
+  text-align: center;
+}
+
+.CalculatorPage .input-group span.input-group-text, 
+.CalculatorPage .input-group input.form-control  {
+  border: 2px solid #0019311A;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.CalculatorPage .input-group input.form-control:focus {
+  border-color: #00B163;
+  outline: none;
+  box-shadow: none;
+}
+
+.CalculatorPage .form-label {
+  font-size: 12px;
+  font-weight: bold;
+  color: #001931;
+}
+
+.CalculatorPage .form-label span {
+  font-size: 12px;
+  font-weight: 500;
+  color: #00193180;
+}
+
+.CalculatorPage .card .card-body .nav.nav-tabs {
+  border-color: #00B163;
+  margin-bottom: 0 !important;
+  margin-top: 1rem;
+}
+
+.CalculatorPage .card .card-body .nav.nav-tabs .nav-item .nav-link {
+  font-size: 16px;
+  font-weight: bold;
+  color: #00193180;
+}
+
+.CalculatorPage .card .card-body .nav.nav-tabs .nav-item .nav-link:hover {
+  border-color: transparent;
+}
+
+.CalculatorPage .card .card-body .nav.nav-tabs .nav-item .nav-link.active {
+  border-color: #00B163;
+  border-bottom-color: white;
+  font-size: 16px;
+  font-weight: bold;
+  color: #00B163;
+}
+
+.CalculatorPage .card .card-body .tab-content {
+  border: 1px solid #00B163;
+  border-top-color: transparent !important;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding: 1rem;
+}
+
+.CalculatorPage .card .accordion-item {
+  border: none;
+}
+
+.CalculatorPage .card .accordion-item:focus-visible {
+  border: none;
+}
+
+.CalculatorPage .card .accordion-item button:focus {
+  border: none;
+  box-shadow: none;
+}
+
+.CalculatorPage .card .accordion-item button {
+  color: #00B163;
+  font-weight: 500;
+}
+
+.CalculatorPage .card .accordion-item button[aria-expanded = true] {
+  background: rgb(0 177 99 / 10%);
+  color: #00B163;
+  font-weight: 500;
+}
+
+.CalculatorPage .card .result-table-section {
+  height: 36vh;
+  overflow-y: scroll;
+}
+
+.CalculatorPage .card .result-table-section::-webkit-scrollbar {
+  background-color: rgb(0 177 99 / 10%);
+  width: 5px;
+}
+
+.CalculatorPage .card .result-table-section::-webkit-scrollbar-track  {
+  background-color: rgb(0 177 99 / 10%);
+  width: 5px;
+}
+
+.CalculatorPage .card .result-table-section::-webkit-scrollbar-thumb {
+  background-color: #00B163;
+  width: 5px;
+}
+
+.border-green {
+  border-color: #00B163 !important;
+}
+
+.card.border-green label {
+  color: #00193180;
+}
+.card.border-green span strong {
+  font-size: 14px;
+  color: #00B163;
+}
+
+.card.border-green span {
+  font-size: 12px;
+  font-weight: 500;
+  color: #00193180;
+}
+
+.dashboard-card h3{
+  font-weight: 500;
+  color: #00B163;
+}
+
+.dashboard-card .card-subtitle,
+.dashboard-card span {
+  color: #00193180;
+}
+
+.dashboard-card .card-icon {
+  font-size: 20px;
+}
+
+.dashboard-card .card-icon span {
+  border: 1px solid #00B163;
+  padding: 1rem;
+  display: flex;
+  border-radius: 50px;
+  background: #00b3651a;
+  color: #00B163;
+}
+
+
+table tr th {
+  font-size: 12px;
+}
+
+.card button.save-btn {
+  background: #00B1631a !important;
+  border: 1px solid #00B163 !important;
+  font-size: 16px;
+  font-weight: bolder;
+  color: #00B163 !important;
+}
