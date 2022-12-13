@@ -103,7 +103,7 @@
 }
 
 .CalculatorPage .card .result-table-section {
-  height: 36vh;
+  /* height: 100vh; */
   overflow-y: scroll;
 }
 
