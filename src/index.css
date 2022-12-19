@@ -175,3 +175,82 @@ table tr th {
   font-weight: bolder;
   color: #00B163 !important;
 }
+
+.description-btn {
+  position: fixed;
+  bottom: 5%;
+  right: 5%;
+  height: 40px;
+  width: 40px;
+  background: #00B163 !important;
+  border-radius: 50% !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 0 20px black;
+  z-index: 10;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.title-word {
+  animation: color-animation 4s linear infinite;
+}
+
+.title-word-1 {
+  --color-1: #DF8453;
+  --color-2: #3D8DAE;
+  --color-3: #E4A9A8;
+}
+
+.title-word-2 {
+  --color-1: #DBAD4A;
+  --color-2: #ACCFCB;
+  --color-3: #17494D;
+}
+
+.title-word-3 {
+  --color-1: #ACCFCB;
+  --color-2: #E4A9A8;
+  --color-3: #ACCFCB;
+}
+
+.title-word-4 {
+  --color-1: #3D8DAE;
+  --color-2: #DF8453;
+  --color-3: #E4A9A8;
+}
+
+@keyframes color-animation {
+  0%    {color: var(--color-1)}
+  32%   {color: var(--color-1)}
+  33%   {color: var(--color-2)}
+  65%   {color: var(--color-2)}
+  66%   {color: var(--color-3)}
+  99%   {color: var(--color-3)}
+  100%  {color: var(--color-1)}
+}
+
+/* Here are just some visual styles. 🖌 */
+
+
+.title {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 2rem;
+  text-transform: uppercase;
+}
+
+.modal .modal-content {
+  border-color: #00B163 !important;
+}
+
+.modal-header {
+  background: #00B163;
+  color: white;
+}
+
+.modal button {
+  background: #00B163 !important;
+  border-color: #00B163 !important;
+}

@@ -11,9 +11,8 @@ import {
   Table,
   Accordion,
   Button,
-  Modal
 } from "react-bootstrap";
-import { FaCalendarAlt, FaCoins, FaMoneyBill, FaPercent, FaQuestion } from "react-icons/fa";
+import { FaCalendarAlt, FaCoins, FaMoneyBill, FaPercent } from "react-icons/fa";
 import Chart from "react-apexcharts";
 import { onValue, ref } from "firebase/database";
 import { uuidv4 } from "@firebase/util";
@@ -22,8 +21,72 @@ import { db } from "../../utils/firebase";
 import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
-import { InvestmentChart, PieChart, PortfolioChart, TotalIncomeChart } from "../../components/charts/Charts";
 
+const pieOption = {
+  chart: {
+    type: "donut",
+    width: "100%",
+    // offsetY: 30,
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  plotOptions: {
+    pie: {
+      donut: {
+        size: "80%",
+        labels: {
+          show: true,
+          value: {
+            fontSize: "24px",
+            fontWeight: 900,
+            color: "#fff",
+            offsetY: -5,
+          },
+          total: {
+            show: true,
+            offsetY: 10,
+            showAlways: true,
+            fontSize: "0px",
+            label: "Total",
+            formatter: function (w) {
+              console.log(w.globals.seriesTotals);
+              return "$45.012";
+              /*return w.globals.seriesTotals.reduce((a, b) => {
+                    return a + b;
+                  }, 0);*/
+            },
+          },
+        },
+      },
+      offsetY: 0,
+    },
+    // stroke: {
+    //   colors: undefined,
+    // },
+  },
+  states: {
+    normal: { filter: { type: "darken", value: 1 } },
+    hover: { filter: { type: "lighten", value: 0.1 } },
+    active: { filter: { type: "darken", value: 1 } },
+  },
+  colors: ["#E564B8", "#5426BE", "#22C77A"],
+  stroke: { width: 0 },
+  legend: {
+    show: true,
+    position: "bottom",
+    markers: {
+      width: 7,
+      height: 7,
+      radius: 12,
+    },
+  },
+  series: [21, 23, 19],
+  tooltip: {
+    enabled: true,
+  },
+  labels: ["Increased Floors", "Increased Volume", "Increased Delistings"],
+};
 
 function CalculatorPage() {
   const [mSalary, setMSalary] = useState(0);
@@ -44,8 +107,8 @@ function CalculatorPage() {
   const [tInvestY, setTInvestY] = useState(0);
   const [principleProfit, setPrincipleProfit] = useState(0);
   const [documentId, setDocumentId] = useState('');
-  const [show, setShow] = useState(false);
   
+  // const table1Data = [];
 
   const getData = async () => {
     await getDocs(collection(db, 'financial'))
@@ -126,7 +189,6 @@ function CalculatorPage() {
         _savingYearly += parseFloat(group[i][j].saved);
         _investedYearly += parseFloat(group[i][j].invested);
       }
-      _investedYearlyForInsert = _investedYearly;
       _accumulatedExpense += _expenseYearly;
       _accumulatedSaving += _savingYearly;
       let _accumulatedExpenseForInsert = 0, _accumulatedSavingForInsert = 0, _annualProfitForInsert = 0;
@@ -136,7 +198,7 @@ function CalculatorPage() {
         _accumulatedExpenseForInsert = _accumulatedExpense;
         _accumulatedSavingForInsert = _accumulatedSaving;
         _accumulatedForInsert = _investedYearlyForInsert + _totalForLast;
-        if(yInvest >= i + 1) {
+        if(yInvest >= 2) {
           _annualProfitForInsert = Math.round(intest * _accumulatedForInsert * 0.01);
         }
         _accumulatedProfit += _annualProfitForInsert;
@@ -153,7 +215,7 @@ function CalculatorPage() {
         Total: _accumulatedForInsert + _annualProfitForInsert,
       };
       _totalForLast = _accumulatedForInsert + _annualProfitForInsert;
-      
+      _investedYearlyForInsert = _investedYearly;
       ResultArray[i] = resultTmp;
     }
     
@@ -213,7 +275,7 @@ function CalculatorPage() {
     setTSaving(_tSaving);
     setTInvest(_tInvest);
     setTInvestY(_tInvestY);
-    setPrincipleProfit(_tInvest + _tInvestY);
+    setPrincipleProfit(_tInvest + _tInvestY)
     let _dashboardArray = {
       tSalary : _tExpense + _tSaving + _tInvest,
       tExpense : _tExpense,
@@ -235,43 +297,43 @@ function CalculatorPage() {
   const dashboardData = [
     {
       title: "Calculations Over",
-      value: ((pCalculation / 12).toFixed(1)).toLocaleString(),
+      value: yInvest,
       type: "Years",
       icon: <FaCalendarAlt />,
     },
     {
       title: "Accumulated Monthly Salary",
-      value: tSalary.toLocaleString(),
+      value: tSalary,
       type: "SAR",
       icon: <FaCoins />,
     },
     {
       title: "Accumulated Expense",
-      value: tExpense.toLocaleString(),
+      value: tExpense,
       type: "SAR",
       icon: <FaCoins />,
     },
     {
       title: "Accumulated Saving",
-      value: tSaving.toLocaleString(),
+      value: tSaving,
       type: "SAR",
       icon: <FaCoins />,
     },
     {
       title: "Accumulated Investment",
-      value: tInvest.toLocaleString(),
+      value: tInvest,
       type: "SAR",
       icon: <FaCoins />,
     },
     {
       title: "Total Investment Yield",
-      value: tInvestY.toLocaleString(),
+      value: tInvestY,
       type: "SAR",
       icon: <FaCoins />,
     },
     {
       title: "Principle + Profit",
-      value: principleProfit.toLocaleString(),
+      value: principleProfit,
       type: "SAR",
       icon: <FaCoins />,
     },
@@ -357,68 +419,21 @@ function CalculatorPage() {
       } catch (error) {
         console.log('no')
       }
+
+
     }
+      
+    
+
+    
   }
 
-  const PieChartData = [41, 21, 38];
+  const pieChartData = [41, 21, 38];
 
-  const PortfolioChartData = [
-    {
-      name: "Expense",
-      data: [tExpense],
-    },
-    {
-      name: "Saving",
-      data: [tSaving],
-    },
-  ];
-
-  const TotalIncomeChartData = [
-    {
-      name: "Total Income",
-      data: [tSalary],
-    },
-    {
-      name: "Expense",
-      data: [tExpense],
-    },
-    {
-      name: "Saving",
-      data: [tSaving],
-    },
-    {
-      name: "Investment",
-      data: [tInvest],
-    },
-  ];
-
-  const InvestmentChartData = [
-    {
-      name: "Investment",
-      data: [tInvest],
-    },
-    {
-      name: "Profit",
-      data: [tInvestY],
-    },
-    {
-      name: "Principle + Profit",
-      data: [principleProfit],
-    },
-  ];
-
- 
   return (
     <div className="CalculatorPage py-2">
       <ToastContainer />
-      <Button className="description-btn" onClick={() => setShow(true)}><FaQuestion/></Button>
       <Container>
-        <h2 className="title text-center">
-          <span className="title-word title-word-1">Manage your </span>
-          <span className="title-word title-word-2">money and </span>
-          <span className="title-word title-word-3">Grow your</span>
-          <span className="title-word title-word-4">Income</span>
-        </h2>        
         <div className="section-title">Dashboard</div>
         <Row>
           {dashboardData.map((item, idx) => (
@@ -439,41 +454,6 @@ function CalculatorPage() {
               </Card>
             </Col>
           ))}
-        </Row>
-        <div className="section-title">Charts</div>
-        <Row>
-          <Col sm={12} xs={12} md={3} className="mb-2">
-            <Card>
-              <Card.Body>
-                <h4 className="text-center text-gray">Total Income</h4>
-                <PieChart data={PieChartData} height="260"/>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col sm={12} xs={12} md={3} className="mb-2">
-            <Card>
-              <Card.Body>
-              <h4 className="text-center text-gray">Portfolio</h4>
-              <PortfolioChart data={PortfolioChartData} height="220"/>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col sm={12} xs={12} md={3} className="mb-2">
-            <Card>
-              <Card.Body>
-              <h4 className="text-center text-gray">Total Income</h4>
-              <TotalIncomeChart data={TotalIncomeChartData} height="220"/>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col sm={12} xs={12} md={3} className="mb-2">
-            <Card>
-              <Card.Body>
-              <h4 className="text-center text-gray">Investment</h4>
-              <InvestmentChart data={InvestmentChartData} height="220"/>
-              </Card.Body>
-            </Card>
-          </Col>
         </Row>
         <div className="section-title">Set Values</div>
         <Row>
@@ -621,7 +601,7 @@ function CalculatorPage() {
                   </Col>
                 </Row>
                 <Row>
-                  <Col sm={12} xs={12} md={12}><Button className="w-100 save-btn" onClick={Submit}>Calculate</Button></Col>
+                  <Col sm={12} xs={12} md={12}><Button className="w-100 save-btn" onClick={Submit}>Save Data</Button></Col>
                 </Row>
               </Card.Body>
             </Card>
@@ -736,26 +716,6 @@ function CalculatorPage() {
           </Card.Body>
         </Card>
       </Container>
-      <Modal show={show} onHide={() => setShow(false)} animation={true} size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      dir="rtl"
-      centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Manage your money and Grow your Income</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>This service allows you to make the right decisions when it comes to managing your money and options available for you to grow your income and wealth.</p>
-          <p>It allows you to compare between saving or investing your money over a period of time, just to make the right money decision for your prosperity and financial independence.</p>
-          <p>Compare now and learn how to make the right decisions based on all possible scenarios.</p>
-          <p>Please talk to us if you need any help in your financial planning.</p> 
-          <p><strong>Email:</strong> financial_001@gmail.com</p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={() => setShow(false)}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </div>
   );
 }
