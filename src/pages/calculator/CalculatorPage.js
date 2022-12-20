@@ -446,10 +446,7 @@ function CalculatorPage() {
             
       <Container>
         <h2 className="title text-center">
-          <span className="title-word title-word-1">Manage your </span>
-          <span className="title-word title-word-2">money and </span>
-          <span className="title-word title-word-3">Grow your </span>
-          <span className="title-word title-word-4">Income</span>
+          <span className="title-word title-word-1">{mainLanguage.modalTitle}</span>
         </h2>        
         <div className="section-title d-flex align-items-center justify-content-between">
           <span>{mainLanguage.dashboard}</span>

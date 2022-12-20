@@ -76,7 +76,7 @@ export const PortfolioChart = ({data, height}) => {
               horizontal: false,
             }
           },
-          colors: ["#ff0000", "#808080", "#0000ff"],
+          colors: ["#ff0000", "#00B163", "#0000ff"],
           dataLabels: {
             enabled: false
           },
@@ -119,7 +119,7 @@ export const TotalIncomeChart = ({data, height}) => {
               horizontal: false,
             }
           },
-          colors: ["#ff0000", "#808080", "#0000ff", "#00B163"],
+          colors: ["#808080", "#ff0000", "#00B163","#0000ff"],
           dataLabels: {
             enabled: false
           },
@@ -162,7 +162,7 @@ export const InvestmentChart = ({data, height}) => {
               horizontal: false,
             }
           },
-          colors: ["#ff0000", "#808080", "#0000ff", "#00B163"],
+          colors: ["#0000ff","#ffc107", "#0d6efd"],
           dataLabels: {
             enabled: false
           },
