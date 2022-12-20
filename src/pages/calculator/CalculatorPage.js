@@ -23,6 +23,8 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { InvestmentChart, PieChart, PortfolioChart, TotalIncomeChart } from "../../components/charts/Charts";
+import { ThemeMode, useThemeContext } from "../../utils/ThemeContext";
+import Switch from "react-switch";
 
 
 function CalculatorPage() {
@@ -45,6 +47,9 @@ function CalculatorPage() {
   const [principleProfit, setPrincipleProfit] = useState(0);
   const [documentId, setDocumentId] = useState('');
   const [show, setShow] = useState(false);
+  const { value, setValue } = useThemeContext();
+
+  const [checked, setChecked] = useState(false);
   
 
   const getData = async () => {
@@ -54,8 +59,6 @@ function CalculatorPage() {
       .map((doc) => (
         {...doc.data(), id : doc.id}
       ));
-
-      console.log('getdata', newData[0]);
       setMSalary(newData[0].mSalary);
       setExpense(newData[0].expense);
       setInvest(newData[0].invest);
@@ -65,25 +68,27 @@ function CalculatorPage() {
       setMonths(newData[0].Months);
       setDocumentId(newData[0].id);
     })
-  }
+  }  
 
   useEffect(() => {
     getData();
   }, []);
 
-  useEffect(() => {
+  useEffect(() => {    
+
+    if (parseFloat(months) > 12) {
+      setMonths(0);
+      return;
+    }
+
     let _savingVaue = parseFloat(expense) + parseFloat(invest);
 
     if (_savingVaue > parseFloat(mSalary)) {
       setSaving(0);
     } else {
       _savingVaue = parseFloat(mSalary) - _savingVaue;
+      // alert(_savingVaue)
       setSaving(_savingVaue);
-    }
-
-    if (parseFloat(months) > 12) {
-      setMonths(0);
-      return;
     }
 
     let _pCalculation = parseFloat(yCMonthly) * 12 + parseFloat(months);
@@ -165,7 +170,7 @@ function CalculatorPage() {
         _tmpInvestedYearly = _investedYearlyForInsert;
       }
       _accumulatedForInsert = ResultArray[i - 1]?.Total + _tmpInvestedYearly;
-      if(yInvest >= i) {
+      if(yInvest >= 2) {
         _annualProfitForInsert =  Math.round(_accumulatedForInsert * intest * 0.01);
       }
       _accumulatedProfit += _annualProfitForInsert;
@@ -182,7 +187,7 @@ function CalculatorPage() {
       };
       ResultArray[i] = resultTmp;
     }
-    console.log(ResultArray);
+    console.log("---------------------",ResultArray);
     setResultData(ResultArray);
 
     let _tSalary = 0;
@@ -230,7 +235,9 @@ function CalculatorPage() {
     console.log("dashboard array = >",_dashboardArray)
 
 
-  }, [mSalary, expense, invest, yInvest, intest, yCMonthly, months]);
+  }, [mSalary, expense, invest, yInvest, intest, yCMonthly, months, saving]);
+
+  
 
   const dashboardData = [
     {
@@ -360,7 +367,8 @@ function CalculatorPage() {
     }
   }
 
-  const PieChartData = [41, 21, 38];
+
+  const PieChartData = [parseFloat(expense), parseFloat(saving), parseFloat(invest)];
 
   const PortfolioChartData = [
     {
@@ -407,11 +415,25 @@ function CalculatorPage() {
     },
   ];
 
+  const handleChange = nextChecked => {
+    setChecked(nextChecked);
+    let _value ="";
+    if(value == "ltr") {
+      _value = "rtl"
+      setValue(_value);
+    } 
+    else {
+      _value = "ltr"
+      setValue(_value);
+    }
+  };
+
  
   return (
     <div className="CalculatorPage py-2">
       <ToastContainer />
       <Button className="description-btn" onClick={() => setShow(true)}><FaQuestion/></Button>
+            
       <Container>
         <h2 className="title text-center">
           <span className="title-word title-word-1">Manage your </span>
@@ -419,7 +441,15 @@ function CalculatorPage() {
           <span className="title-word title-word-3">Grow your</span>
           <span className="title-word title-word-4">Income</span>
         </h2>        
-        <div className="section-title">Dashboard</div>
+        <div className="section-title d-flex align-items-center justify-content-between">
+          <span>Dashboard</span>
+          
+            <Switch
+          onChange={handleChange}
+          checked={checked}
+          className="react-switch"
+        />
+        </div>
         <Row>
           {dashboardData.map((item, idx) => (
             <Col sm={12} xs={12} md={3} className="my-2">
@@ -736,9 +766,8 @@ function CalculatorPage() {
           </Card.Body>
         </Card>
       </Container>
-      <Modal show={show} onHide={() => setShow(false)} animation={true} size="lg"
+      <Modal show={show} onHide={() => setShow(false)} animation={true} size="lg" dir={value}
       aria-labelledby="contained-modal-title-vcenter"
-      dir="rtl"
       centered>
         <Modal.Header closeButton>
           <Modal.Title>Manage your money and Grow your Income</Modal.Title>
