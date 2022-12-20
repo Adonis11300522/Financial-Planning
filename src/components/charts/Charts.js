@@ -1,6 +1,6 @@
 import Chart from "react-apexcharts";
 
-export const PieChart = ({data, height}) => {
+export const PieChart = ({data, height, lang}) => {
     const Option = {
         chart: {
           type: "donut",
@@ -49,7 +49,7 @@ export const PieChart = ({data, height}) => {
         tooltip: {
           enabled: true,
         },
-        labels: ["Expense", "Saving", "Investment"],
+        labels: [lang.expense, lang.saving, lang.investment],
       };
 
     return(

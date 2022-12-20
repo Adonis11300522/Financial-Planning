@@ -25,6 +25,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { InvestmentChart, PieChart, PortfolioChart, TotalIncomeChart } from "../../components/charts/Charts";
 import { ThemeMode, useThemeContext } from "../../utils/ThemeContext";
 import Switch from "react-switch";
+import language from '../../utils/language.json';
 
 
 function CalculatorPage() {
@@ -50,8 +51,9 @@ function CalculatorPage() {
   const { value, setValue } = useThemeContext();
 
   const [checked, setChecked] = useState(false);
+  const [mainLanguage, setMainLanguage] = useState(language.en);
   
-
+  const Language = language;
   const getData = async () => {
     await getDocs(collection(db, 'financial'))
     .then((QuerySnapshot) => {
@@ -74,6 +76,9 @@ function CalculatorPage() {
     getData();
   }, []);
 
+
+  console.log("main", mainLanguage)
+
   useEffect(() => {    
 
     if (parseFloat(months) > 12) {
@@ -91,6 +96,9 @@ function CalculatorPage() {
       setSaving(_savingVaue);
     }
 
+    if(months == "") {
+      setMonths(0);
+    }
     let _pCalculation = parseFloat(yCMonthly) * 12 + parseFloat(months);
     setPCalculation(_pCalculation);
 
@@ -241,48 +249,48 @@ function CalculatorPage() {
 
   const dashboardData = [
     {
-      title: "Calculations Over",
+      title: mainLanguage.calculationsOver,
       value: ((pCalculation / 12).toFixed(1)).toLocaleString(),
-      type: "Years",
+      type: mainLanguage.years,
       icon: <FaCalendarAlt />,
     },
     {
-      title: "Accumulated Monthly Salary",
+      title: mainLanguage.accumulatedMonthlySalary,
       value: tSalary.toLocaleString(),
-      type: "SAR",
+      type: mainLanguage.sar,
       icon: <FaCoins />,
     },
     {
-      title: "Accumulated Expense",
+      title: mainLanguage.accumulatedExpense,
       value: tExpense.toLocaleString(),
-      type: "SAR",
+      type: mainLanguage.sar,
       icon: <FaCoins />,
     },
     {
-      title: "Accumulated Saving",
+      title: mainLanguage.accumulatedSaving,
       value: tSaving.toLocaleString(),
-      type: "SAR",
+      type: mainLanguage.sar,
       icon: <FaCoins />,
     },
     {
-      title: "Accumulated Investment",
+      title: mainLanguage.accumulatedInvestment,
       value: tInvest.toLocaleString(),
-      type: "SAR",
+      type: mainLanguage.sar,
       icon: <FaCoins />,
     },
     {
-      title: "Total Investment Yield",
+      title: mainLanguage.totalInvestmentYield,
       value: tInvestY.toLocaleString(),
-      type: "SAR",
+      type: mainLanguage.sar,
       icon: <FaCoins />,
     },
     {
-      title: "Principle + Profit",
+      title: mainLanguage.principleProfit,
       value: principleProfit.toLocaleString(),
-      type: "SAR",
+      type: mainLanguage.sar,
       icon: <FaCoins />,
     },
-    { title: "Profit Rate", value: intest, type: "%", icon: <FaPercent /> },
+    { title: mainLanguage.profitRate, value: intest, type: "%", icon: <FaPercent /> },
   ];
 
   const Submit = async () => {
@@ -300,7 +308,7 @@ function CalculatorPage() {
           yCMonthly : yCMonthly,
           yInvestment : yInvest
         })
-        toast.success('Data saving successful!', {
+        toast.success(mainLanguage.successMessage, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -311,7 +319,7 @@ function CalculatorPage() {
           theme: "light",
           });
       } catch (error) {
-        toast.error('Failed to save data!', {
+        toast.error(mainLanguage.errorMessage, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -339,7 +347,7 @@ function CalculatorPage() {
           yCMonthly : yCMonthly,
           yInvestment : yInvest
         }).then(docRef => {
-          toast.success('Data saving successful!', {
+          toast.success(mainLanguage.successMessage, {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -350,7 +358,7 @@ function CalculatorPage() {
             theme: "light",
             });
         }).catch (e => {
-          toast.error('Failed to save data!', {
+          toast.error(mainLanguage.errorMessage, {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -372,45 +380,45 @@ function CalculatorPage() {
 
   const PortfolioChartData = [
     {
-      name: "Expense",
+      name: mainLanguage.expense,
       data: [tExpense],
     },
     {
-      name: "Saving",
+      name: mainLanguage.saving,
       data: [tSaving],
     },
   ];
 
   const TotalIncomeChartData = [
     {
-      name: "Total Income",
+      name: mainLanguage.totalIncome,
       data: [tSalary],
     },
     {
-      name: "Expense",
+      name: mainLanguage.expense,
       data: [tExpense],
     },
     {
-      name: "Saving",
+      name: mainLanguage.saving,
       data: [tSaving],
     },
     {
-      name: "Investment",
+      name: mainLanguage.investment,
       data: [tInvest],
     },
   ];
 
   const InvestmentChartData = [
     {
-      name: "Investment",
+      name: mainLanguage.investment,
       data: [tInvest],
     },
     {
-      name: "Profit",
+      name: mainLanguage.profit,
       data: [tInvestY],
     },
     {
-      name: "Principle + Profit",
+      name: mainLanguage.principleProfit,
       data: [principleProfit],
     },
   ];
@@ -419,11 +427,13 @@ function CalculatorPage() {
     setChecked(nextChecked);
     let _value ="";
     if(value == "ltr") {
-      _value = "rtl"
+      _value = "rtl";
+      setMainLanguage(Language.ar);
       setValue(_value);
     } 
     else {
-      _value = "ltr"
+      _value = "ltr";
+      setMainLanguage(Language.en);
       setValue(_value);
     }
   };
@@ -438,17 +448,19 @@ function CalculatorPage() {
         <h2 className="title text-center">
           <span className="title-word title-word-1">Manage your </span>
           <span className="title-word title-word-2">money and </span>
-          <span className="title-word title-word-3">Grow your</span>
+          <span className="title-word title-word-3">Grow your </span>
           <span className="title-word title-word-4">Income</span>
         </h2>        
         <div className="section-title d-flex align-items-center justify-content-between">
-          <span>Dashboard</span>
-          
-            <Switch
+          <span>{mainLanguage.dashboard}</span>
+          <div className="d-flex align-items-center">{mainLanguage.language} : 
+          <Switch
           onChange={handleChange}
           checked={checked}
-          className="react-switch"
+          className="react-switch ms-2"
         />
+        </div>
+            
         </div>
         <Row>
           {dashboardData.map((item, idx) => (
@@ -470,20 +482,20 @@ function CalculatorPage() {
             </Col>
           ))}
         </Row>
-        <div className="section-title">Charts</div>
+        <div className="section-title">{mainLanguage.charts}</div>
         <Row>
           <Col sm={12} xs={12} md={3} className="mb-2">
             <Card>
               <Card.Body>
-                <h4 className="text-center text-gray">Total Income</h4>
-                <PieChart data={PieChartData} height="260"/>
+                <h4 className="text-center text-gray">{mainLanguage.totalIncome}</h4>
+                <PieChart data={PieChartData} lang={mainLanguage} height="260"/>
               </Card.Body>
             </Card>
           </Col>
           <Col sm={12} xs={12} md={3} className="mb-2">
             <Card>
               <Card.Body>
-              <h4 className="text-center text-gray">Portfolio</h4>
+              <h4 className="text-center text-gray">{mainLanguage.portfolio}</h4>
               <PortfolioChart data={PortfolioChartData} height="220"/>
               </Card.Body>
             </Card>
@@ -491,7 +503,7 @@ function CalculatorPage() {
           <Col sm={12} xs={12} md={3} className="mb-2">
             <Card>
               <Card.Body>
-              <h4 className="text-center text-gray">Total Income</h4>
+              <h4 className="text-center text-gray">{mainLanguage.totalIncome}</h4>
               <TotalIncomeChart data={TotalIncomeChartData} height="220"/>
               </Card.Body>
             </Card>
@@ -499,13 +511,13 @@ function CalculatorPage() {
           <Col sm={12} xs={12} md={3} className="mb-2">
             <Card>
               <Card.Body>
-              <h4 className="text-center text-gray">Investment</h4>
+              <h4 className="text-center text-gray">{mainLanguage.investment}</h4>
               <InvestmentChart data={InvestmentChartData} height="220"/>
               </Card.Body>
             </Card>
           </Col>
         </Row>
-        <div className="section-title">Set Values</div>
+        <div className="section-title">{mainLanguage.setValues}</div>
         <Row>
           <Col sm={12} xs={12} md={12} className="my-2">
             <Card className="text-white">
@@ -513,7 +525,7 @@ function CalculatorPage() {
                 <Row>
                   <Col sm={12} xs={12} md={4}>
                     <Form.Label>
-                      Monthly Salary<span className="ms-2">( $ )</span>
+                      {mainLanguage.monthlySalary}<span className="ms-2">({ mainLanguage.sar} )</span>
                     </Form.Label>
                     <InputGroup size="sm" className="mb-3">
                       <Form.Control
@@ -522,13 +534,14 @@ function CalculatorPage() {
                         aria-describedby="basic-addon1"
                         type="number"
                         value={mSalary}
+                        min="0"
                         onChange={(e) => setMSalary(e.target.value)}
                       />
                     </InputGroup>
                   </Col>
                   <Col sm={12} xs={12} md={4}>
                     <Form.Label>
-                      Expense<span className="ms-2">( $ )</span>
+                      {mainLanguage.expense}<span className="ms-2">( {mainLanguage.sar} )</span>
                     </Form.Label>
                     <InputGroup size="sm" className="mb-3">
                       <Form.Control
@@ -537,13 +550,14 @@ function CalculatorPage() {
                         aria-describedby="basic-addon1"
                         type="number"
                         value={expense}
+                        min="0"
                         onChange={(e) => setExpense(e.target.value)}
                       />
                     </InputGroup>
                   </Col>
                   <Col sm={12} xs={12} md={4}>
                     <Form.Label>
-                      Invest<span className="ms-2">( $ )</span>
+                      {mainLanguage.invest}<span className="ms-2">( {mainLanguage.sar} )</span>
                     </Form.Label>
                     <InputGroup size="sm" className="mb-3">
                       <Form.Control
@@ -552,13 +566,14 @@ function CalculatorPage() {
                         aria-describedby="basic-addon1"
                         type="number"
                         value={invest}
+                        min="0"
                         onChange={(e) => setInvest(e.target.value)}
                       />
                     </InputGroup>
                   </Col>
                   <Col sm={12} xs={12} md={4}>
                     <Form.Label>
-                      Years of Investment<span className="ms-2">( Years )</span>
+                      {mainLanguage.yearsofInvestment}<span className="ms-2">( {mainLanguage.years} )</span>
                     </Form.Label>
                     <InputGroup size="sm" className="mb-3">
                       <Form.Control
@@ -566,6 +581,7 @@ function CalculatorPage() {
                         aria-label="Username"
                         aria-describedby="basic-addon1"
                         type="number"
+                        min="0"
                         value={yInvest}
                         onChange={(e) => setYInvest(e.target.value)}
                       />
@@ -573,7 +589,7 @@ function CalculatorPage() {
                   </Col>
                   <Col sm={12} xs={12} md={4}>
                     <Form.Label>
-                      Interest<span className="ms-2">( % )</span>
+                      {mainLanguage.interest}<span className="ms-2">( % )</span>
                     </Form.Label>
                     <InputGroup size="sm" className="mb-3">
                       <Form.Control
@@ -582,13 +598,14 @@ function CalculatorPage() {
                         aria-describedby="basic-addon1"
                         type="number"
                         value={intest}
+                        min="0"
                         onChange={(e) => setInterest(e.target.value)}
                       />
                     </InputGroup>
                   </Col>
                   <Col sm={12} xs={12} md={4}>
                     <Form.Label>
-                      Saving<span className="ms-2">( $ )</span>
+                      {mainLanguage.saving}<span className="ms-2">( {mainLanguage.sar} )</span>
                     </Form.Label>
                     <InputGroup size="sm" className="mb-3">
                       <Form.Control
@@ -597,14 +614,15 @@ function CalculatorPage() {
                         aria-describedby="basic-addon1"
                         type="number"
                         value={saving}
+                        min="0"
                         onChange={(e) => setSaving(e.target.value)}
                       />
                     </InputGroup>
                   </Col>
                   <Col sm={12} xs={12} md={4}>
                     <Form.Label>
-                      Years of Contributing Monthly
-                      <span className="ms-2">( Years )</span>
+                     {mainLanguage.yearsofContributingMonthly}
+                      <span className="ms-2">( {mainLanguage.years} )</span>
                     </Form.Label>
                     <InputGroup size="sm" className="mb-3">
                       <Form.Control
@@ -612,6 +630,7 @@ function CalculatorPage() {
                         aria-label="Username"
                         aria-describedby="basic-addon1"
                         type="number"
+                        min="0"
                         value={yCMonthly}
                         onChange={(e) => setYCMonthly(e.target.value)}
                       />
@@ -619,8 +638,8 @@ function CalculatorPage() {
                   </Col>
                   <Col sm={12} xs={12} md={4}>
                     <Form.Label>
-                      Months<span className="ms-2">( Months )</span>
-                      <span className="mx-2">* Months must be 12</span>
+                      {mainLanguage.months}<span className="ms-2">( {mainLanguage.months} )</span>
+                      <span className="mx-2">* {mainLanguage.monthsMustBe12}</span>
                     </Form.Label>
                     <InputGroup size="sm" className="mb-3">
                       <Form.Control
@@ -629,14 +648,15 @@ function CalculatorPage() {
                         aria-describedby="basic-addon1"
                         type="number"
                         value={months}
+                        min="0"
                         onChange={(e) => setMonths(e.target.value)}
                       />
                     </InputGroup>
                   </Col>
                   <Col sm={12} xs={12} md={4}>
                     <Form.Label>
-                      Period of Calculation
-                      <span className="ms-2">( $ / Months )</span>
+                      {mainLanguage.periodofCalculation}
+                      <span className="ms-2">( {mainLanguage.sar} / {mainLanguage.months} )</span>
                     </Form.Label>
                     <InputGroup size="sm" className="mb-3">
                       <Form.Control
@@ -645,19 +665,20 @@ function CalculatorPage() {
                         aria-describedby="basic-addon1"
                         type="number"
                         value={pCalculation}
+                        min="0"
                         onChange={(e) => setPCalculation(e.target.value)}
                       />
                     </InputGroup>
                   </Col>
                 </Row>
                 <Row>
-                  <Col sm={12} xs={12} md={12}><Button className="w-100 save-btn" onClick={Submit}>Calculate</Button></Col>
+                  <Col sm={12} xs={12} md={12}><Button className="w-100 save-btn" onClick={Submit}>{mainLanguage.calculate}</Button></Col>
                 </Row>
               </Card.Body>
             </Card>
           </Col>
         </Row>
-        <div className="section-title">Results</div>
+        <div className="section-title">{mainLanguage.results}</div>
         <Card>
           <Card.Body>
             <Row>
@@ -668,7 +689,7 @@ function CalculatorPage() {
                   id="noanim-tab-example"
                   className="mb-3"
                 >
-                  <Tab eventKey="result1" title="Result1">
+                  <Tab eventKey="result1" title={mainLanguage.results + 1}>
                     <Row className="result-content">
                       <Col
                         sm={12}
@@ -680,24 +701,24 @@ function CalculatorPage() {
                           {tableData.map((year, idx) => (
                             <Accordion.Item eventKey={idx} key={idx}>
                               <Accordion.Header>
-                                Year {idx + 1}
+                                {mainLanguage.year} {idx + 1}
                               </Accordion.Header>
                               <Accordion.Body>
                                 <div className="month-info-list">
                                   <Table>
                                     <thead>
                                       <tr>
-                                        <th>Month No</th>
-                                        <th>Expense</th>
-                                        <th>Invested</th>
-                                        <th>Saved</th>
-                                        <th>Total</th>
+                                        <th>{mainLanguage.monthNo}</th>
+                                        <th>{mainLanguage.expense}</th>
+                                        <th>{mainLanguage.invested}</th>
+                                        <th>{mainLanguage.saved}</th>
+                                        <th>{mainLanguage.total}</th>
                                       </tr>
                                     </thead>
                                     <tbody>
                                       {year.map((item, i) => (
                                         <tr key={i}>
-                                          <td>Month {item.month + 1}</td>
+                                          <td>{mainLanguage.month} {item.month + 1}</td>
                                           <td>{item.expense}</td>
                                           <td>{item.invested}</td>
                                           <td>{item.saved}</td>
@@ -714,7 +735,7 @@ function CalculatorPage() {
                       </Col>
                     </Row>
                   </Tab>
-                  <Tab eventKey="result2" title="Result2">
+                  <Tab eventKey="result2" title={mainLanguage.results + 2}>
                     <Row className="result-content">
                       <Col
                         sm={12}
@@ -725,23 +746,23 @@ function CalculatorPage() {
                         <Table>
                           <thead>
                             <tr>
-                              <th>Year No</th>
-                              <th>Expense<span className="ms-2">(Yearly)</span></th>
-                              <th>Accumulated Expense</th>
-                              <th>Saving<span className="ms-2">(Yearly)</span></th>
-                              <th>Accumulated Saving</th>
-                              <th>Invested<span className="ms-2">(Yearly)</span></th>
-                              <th>Accumulated</th>
-                              <th>Annual Profit</th>
-                              <th>Accumulated Profit</th>
-                              <th>Total</th>
+                              <th>{mainLanguage.yearNo}</th>
+                              <th>{mainLanguage.expense}<span className="ms-2">({mainLanguage.yearly})</span></th>
+                              <th>{mainLanguage.accumulatedExpense}</th>
+                              <th>{mainLanguage.saving}<span className="ms-2">({mainLanguage.yearly})</span></th>
+                              <th>{mainLanguage.accumulatedSaving}</th>
+                              <th>{mainLanguage.invested}<span className="ms-2">({mainLanguage.yearly})</span></th>
+                              <th>{mainLanguage.accumulated}</th>
+                              <th>{mainLanguage.annualProfit}</th>
+                              <th>{mainLanguage.accumulatedProfit}</th>
+                              <th>{mainLanguage.total}</th>
                             </tr>
                           </thead>
                           <tbody>
                             {
                               resultData.map((item, idx) => (
                                 <tr key={idx}>
-                                  <td>Year {idx + 1}</td>
+                                  <td>{mainLanguage.year} {idx + 1}</td>
                                   <td>{item.ExpenseYearly}</td>
                                   <td>{item.AccumulatedExpense}</td>
                                   <td>{item.SavingYearly}</td>
@@ -770,18 +791,18 @@ function CalculatorPage() {
       aria-labelledby="contained-modal-title-vcenter"
       centered>
         <Modal.Header closeButton>
-          <Modal.Title>Manage your money and Grow your Income</Modal.Title>
+          <Modal.Title>{mainLanguage.modalTitle}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>This service allows you to make the right decisions when it comes to managing your money and options available for you to grow your income and wealth.</p>
-          <p>It allows you to compare between saving or investing your money over a period of time, just to make the right money decision for your prosperity and financial independence.</p>
-          <p>Compare now and learn how to make the right decisions based on all possible scenarios.</p>
-          <p>Please talk to us if you need any help in your financial planning.</p> 
-          <p><strong>Email:</strong> financial_001@gmail.com</p>
+          <p>{mainLanguage.modalContent1}</p>
+          <p>{mainLanguage.modalContent2}</p>
+          <p>{mainLanguage.modalContent3}</p>
+          <p>{mainLanguage.modalContent4}</p> 
+          <p><strong>{mainLanguage.email}:</strong> financial_001@gmail.com</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={() => setShow(false)}>
-            Close
+            {mainLanguage.close}
           </Button>
         </Modal.Footer>
       </Modal>
