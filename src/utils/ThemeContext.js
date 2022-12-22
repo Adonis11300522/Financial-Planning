@@ -4,7 +4,7 @@ const ThemeContext = createContext('');
 
 
 export function ThemeMode ({children}) {
-    const [value, setValue] = useState('ltr')
+    const [value, setValue] = useState('rtl')
     return(
         <ThemeContext.Provider value={{value, setValue}}>
             <html dir={value}>

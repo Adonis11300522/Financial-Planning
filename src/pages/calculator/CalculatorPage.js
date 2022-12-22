@@ -51,7 +51,7 @@ function CalculatorPage() {
   const { value, setValue } = useThemeContext();
 
   const [checked, setChecked] = useState(false);
-  const [mainLanguage, setMainLanguage] = useState(language.en);
+  const [mainLanguage, setMainLanguage] = useState(language.ar);
   
   const Language = language;
   const getData = async () => {

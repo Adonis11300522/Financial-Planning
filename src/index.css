@@ -79,7 +79,8 @@
 }
 
 .CalculatorPage .card .accordion-item {
-  border: none;
+  border: 1px solid #00B163;
+  margin-bottom: 0.25rem;
 }
 
 .CalculatorPage .card .accordion-item:focus-visible {
@@ -89,11 +90,21 @@
 .CalculatorPage .card .accordion-item button:focus {
   border: none;
   box-shadow: none;
+  border: 1px solid #00B163;
+  background: #00b1631a;
 }
 
 .CalculatorPage .card .accordion-item button {
   color: #00B163;
   font-weight: 500;
+  border: none;
+  border-bottom: 1px solid #00B163;
+  background: #00b1631a;
+  /* margin-bottom: 0.25rem; */
+}
+
+.CalculatorPage .card .accordion-item button::after {
+  display: none;
 }
 
 .CalculatorPage .card .accordion-item button[aria-expanded = true] {
