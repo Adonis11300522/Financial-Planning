@@ -795,7 +795,7 @@ function CalculatorPage() {
           <p>{mainLanguage.modalContent2}</p>
           <p>{mainLanguage.modalContent3}</p>
           <p>{mainLanguage.modalContent4}</p> 
-          <p><strong>{mainLanguage.email}:</strong> financial_001@gmail.com</p>
+          <p><strong>{mainLanguage.email}:</strong> Employee.Financials@gmail.com</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={() => setShow(false)}>
