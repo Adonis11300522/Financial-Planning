@@ -50,7 +50,7 @@ function CalculatorPage() {
   const [show, setShow] = useState(false);
   const { value, setValue } = useThemeContext();
 
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
   const [mainLanguage, setMainLanguage] = useState(language.ar);
   
   const Language = language;
@@ -653,7 +653,7 @@ function CalculatorPage() {
                   <Col sm={12} xs={12} md={4}>
                     <Form.Label>
                       {mainLanguage.periodofCalculation}
-                      <span className="ms-2">( {mainLanguage.sar} / {mainLanguage.months} )</span>
+                      <span className="ms-2">( {mainLanguage.months} )</span>
                     </Form.Label>
                     <InputGroup size="sm" className="mb-3">
                       <Form.Control
